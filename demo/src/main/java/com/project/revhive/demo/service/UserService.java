@@ -25,7 +25,13 @@ public class UserService {
           throw new RuntimeException("User name is already present");
       }
 
-      User user=User.builder().username(registerRequest.getUsername()).email(registerRequest.getEmail()).password(passwordEncoder.encode(registerRequest.getPassword())).role(Role.USER).build();
+      User user=User.builder().username(registerRequest.getUsername())
+              .email(registerRequest.getEmail())
+              .password(passwordEncoder.encode(registerRequest.getPassword()))
+              .role(Role.USER)
+              .bio(registerRequest.getBio())
+//              .avatarUrl(registerRequest.getAvatarUrl())
+              .build();
 
       return userRepository.save(user);
 

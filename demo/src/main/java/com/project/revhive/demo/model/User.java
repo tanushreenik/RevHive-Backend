@@ -7,8 +7,7 @@ import lombok.*;
 
 @Entity
 @Table(name="users")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -28,10 +27,15 @@ public class User
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String bio;
     private String avatarUrl;
 
+
+
+    @Builder.Default
     private int followersCount=0;
+    @Builder.Default
     private int followingCount=0;
 
     @Enumerated(EnumType.STRING)
@@ -49,6 +53,7 @@ public class User
     protected void onCreate()
     {
         this.createdAt=System.currentTimeMillis();
+        this.updatedAt=System.currentTimeMillis();
     }
 
     @PreUpdate
