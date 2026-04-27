@@ -1,6 +1,4 @@
 package com.project.revhive.demo.model;
-
-
 import com.project.revhive.demo.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
@@ -56,8 +54,5 @@ public class User
     {
         this.updatedAt=System.currentTimeMillis();
     }
-
-
-
 
 }
