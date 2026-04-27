@@ -38,6 +38,7 @@ public class UserService {
               .password(passwordEncoder.encode(registerRequest.getPassword()))
               .role(Role.USER)
               .bio(registerRequest.getBio())
+              .username(registerRequest.getUsername())
 //              .avatarUrl(registerRequest.getAvatarUrl())
               .build();
 
