@@ -3,6 +3,7 @@ package com.project.revhive.demo.model;
 
 import com.project.revhive.demo.enums.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
@@ -48,6 +49,8 @@ public class User
     private Long createdAt;
 
     private Long updatedAt;
+
+
 
     @PrePersist
     protected void onCreate()
