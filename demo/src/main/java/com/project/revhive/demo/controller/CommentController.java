@@ -36,15 +36,14 @@ public class CommentController {
         return commentService.getCommentsByPost(postId);
     }
 
-<<<<<<< HEAD
-=======
+
     // Count comments
->>>>>>> 96396ec45f12e792c55865a5cd593bf97939a8d8
+
     @GetMapping("/count")
     public long getCommentCount(@RequestParam String postId) {
         return commentService.getCommentCount(postId);
     }
-<<<<<<< HEAD
+
 
     @PutMapping("/edit")
     public String editComment(@RequestParam Long commentId,
@@ -52,6 +51,3 @@ public class CommentController {
         return commentService.editComment(commentId, content);
     }
 }
-=======
-}
->>>>>>> 96396ec45f12e792c55865a5cd593bf97939a8d8
