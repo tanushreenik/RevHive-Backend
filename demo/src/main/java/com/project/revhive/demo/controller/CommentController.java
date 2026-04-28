@@ -16,30 +16,33 @@ public class CommentController {
         this.service = service;
     }
 
-    // ➕ Add comment
     @PostMapping
     public Comment addComment(@RequestParam Long userId,
                               @RequestParam String postId,
-                              @RequestParam String content) {
-        return service.addComment(userId, postId, content);
+                              @RequestParam String content,
+                              @RequestParam(required = false) Long parentCommentId) {
+
+        return service.addComment(userId, postId, content, parentCommentId);
     }
 
-    // 📄 Get comments
     @GetMapping
     public List<Comment> getComments(@RequestParam String postId) {
         return service.getComments(postId);
     }
 
-    // 🗑 Delete comment
     @DeleteMapping("/{id}")
     public String deleteComment(@PathVariable Long id) {
         service.deleteComment(id);
         return "Deleted successfully";
     }
 
-    // 🔢 Count comments
     @GetMapping("/count")
     public long count(@RequestParam String postId) {
         return service.countComments(postId);
+    }
+
+    @GetMapping("/replies")
+    public List<Comment> getReplies(@RequestParam Long parentCommentId) {
+        return service.getReplies(parentCommentId);
     }
 }

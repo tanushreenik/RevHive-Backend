@@ -19,7 +19,8 @@ public class Comment {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // Getters & Setters
+    private Long parentCommentId;
+
 
     public Long getId() {
         return id;
@@ -51,5 +52,13 @@ public class Comment {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public Long getParentCommentId() {
+        return parentCommentId;
+    }
+
+    public void setParentCommentId(Long parentCommentId) {
+        this.parentCommentId = parentCommentId;
     }
 }

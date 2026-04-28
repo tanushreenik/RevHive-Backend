@@ -15,11 +15,10 @@ public class CommentService {
         this.repo = repo;
     }
 
-    // ➕ Add comment
-    public Comment addComment(Long userId, String postId, String content) {
+    public Comment addComment(Long userId, String postId, String content, Long parentCommentId) {
 
         if (content == null || content.trim().isEmpty()) {
-            throw new RuntimeException("Comment cannot be empty");
+            throw new IllegalArgumentException("Comment cannot be empty");
         }
 
         Comment comment = new Comment();
@@ -27,21 +26,24 @@ public class CommentService {
         comment.setPostId(postId);
         comment.setContent(content);
 
+        comment.setParentCommentId(parentCommentId);
+
         return repo.save(comment);
     }
 
-    // 📄 Get comments
     public List<Comment> getComments(String postId) {
         return repo.findByPostId(postId);
     }
 
-    // 🗑 Delete comment
     public void deleteComment(Long id) {
         repo.deleteById(id);
     }
 
-    // 🔢 Count comments
     public long countComments(String postId) {
         return repo.countByPostId(postId);
+    }
+
+    public List<Comment> getReplies(Long parentCommentId) {
+        return repo.findByParentCommentId(parentCommentId);
     }
 }
