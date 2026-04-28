@@ -66,7 +66,6 @@ public class PostService {
         return PostResponse.fromPost(post, isLiked);
     }
 
-    // Get user's posts with pagination
     @Transactional(readOnly = true)
     public Page<PostResponse> getUserPosts(Long userId, Long currentUserId, int page, int size) {
         User user = userRepository.findById(userId)
@@ -81,7 +80,7 @@ public class PostService {
         ));
     }
 
-    // Get feed posts (posts from users that current user follows)
+
     @Transactional(readOnly = true)
     public Page<PostResponse> getFeedPosts(Long userId, int page, int size) {
         userRepository.findById(userId)
@@ -103,7 +102,6 @@ public class PostService {
         ));
     }
 
-    // Get all posts (for explore page)
     @Transactional(readOnly = true)
     public Page<PostResponse> getAllPosts(Long currentUserId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
@@ -136,7 +134,7 @@ public class PostService {
         return PostResponse.fromPost(updatedPost, isLiked);
     }
 
-    // Delete post (soft delete)
+    // Delete post
     @Transactional
     public void deletePost(Long postId, Long userId) {
         Post post = postRepository.findById(postId)
@@ -151,7 +149,7 @@ public class PostService {
         log.info("Post {} soft deleted by user {}", postId, userId);
     }
 
-    // Like post (with notification)
+    // Like post
     @Transactional
     public void likePost(Long postId, Long userId) {
         Post post = postRepository.findById(postId)
@@ -164,15 +162,15 @@ public class PostService {
             throw new RuntimeException("Cannot like deleted post");
         }
 
-        // Check if already liked
+
         if (likeService.isPostLikedByUser(userId, postId)) {
             throw new RuntimeException("Already liked this post");
         }
 
-        // Create like record
+
         likeService.createLike(user, post);
 
-        // Update post like count
+
         postRepository.updateLikeCount(postId, 1);
 
         log.info("User {} liked post {}", userId, postId);
@@ -226,13 +224,13 @@ public class PostService {
         ));
     }
 
-    // Update comment count (called from CommentService)
+    // Update comment count
     @Transactional
     public void updateCommentCount(Long postId, int increment) {
         postRepository.updateCommentCount(postId, increment);
     }
 
-    // Update share count (called from ShareService)
+    // Update share count
     @Transactional
     public void updateShareCount(Long postId, int increment) {
         postRepository.updateShareCount(postId, increment);

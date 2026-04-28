@@ -5,7 +5,6 @@ import com.project.revhive.demo.enums.NotificationType;
 import com.project.revhive.demo.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,6 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-    // Get all notifications for a user
     @GetMapping("/users/{userId}")
     public ResponseEntity<Map<String, Object>> getUserNotifications(
             @PathVariable Long userId,

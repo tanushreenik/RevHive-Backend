@@ -16,13 +16,12 @@ import java.util.Optional;
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 
-    // Check if a follow relationship exists
     boolean existsByFollowerAndFollowing(User follower, User following);
 
-    // Find follow relationship between two users
+
     Optional<Follow> findByFollowerAndFollowing(User follower, User following);
 
-    // Get all followers of a user
+
     List<Follow> findByFollowing(User following);
 
     // Get all users that a user is following

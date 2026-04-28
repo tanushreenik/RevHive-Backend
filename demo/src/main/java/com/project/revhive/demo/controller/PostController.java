@@ -1,7 +1,6 @@
 package com.project.revhive.demo.controller;
 
 import com.project.revhive.demo.dto.request.PostRequest;
-import com.project.revhive.demo.dto.response.PageResponse;
 import com.project.revhive.demo.dto.response.PostResponse;
 import com.project.revhive.demo.service.PostService;
 import jakarta.validation.Valid;
@@ -24,7 +23,6 @@ public class PostController {
 
     private final PostService postService;
 
-    // Create post
     @PostMapping
     public ResponseEntity<Map<String, Object>> createPost(
             @RequestParam Long userId,
@@ -40,7 +38,6 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    // Get post by ID
     @GetMapping("/{postId}")
     public ResponseEntity<Map<String, Object>> getPostById(
             @PathVariable Long postId,

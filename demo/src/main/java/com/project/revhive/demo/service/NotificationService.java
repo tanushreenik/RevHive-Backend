@@ -26,7 +26,6 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
 
-    // Create follow notification
     public Notification createFollowNotification(User recipient, User actor) {
         String content = actor.getUsername() + " started following you";
 
@@ -57,7 +56,6 @@ public class NotificationService {
         return notificationRepository.save(notification);
     }
 
-    // Create comment notification
     public Notification createCommentNotification(User recipient, User actor, Long postId) {
         String content = actor.getUsername() + " commented on your post";
 
@@ -73,7 +71,6 @@ public class NotificationService {
         return notificationRepository.save(notification);
     }
 
-    // Create mention notification
     public Notification createMentionNotification(User recipient, User actor, Long postId) {
         String content = actor.getUsername() + " mentioned you in a post";
 
@@ -89,7 +86,6 @@ public class NotificationService {
         return notificationRepository.save(notification);
     }
 
-    // Get all notifications for a user
     @Transactional(readOnly = true)
     public List<Notification> getUserNotifications(Long userId, int page, int size) {
         User user = userRepository.findById(userId)
@@ -124,7 +120,6 @@ public class NotificationService {
         log.info("Marked notification {} as read for user {}", notificationId, userId);
     }
 
-    // Mark all notifications as read - FIXED: Changed to void return type
     @Transactional
     public void markAllAsRead(Long userId) {
         notificationRepository.markAllAsRead(userId);
@@ -231,7 +226,6 @@ public class NotificationService {
         log.info("Deleted notifications for entity {}", entityId);
     }
 
-    // Check if user has any unread notifications
     @Transactional(readOnly = true)
     public boolean hasUnreadNotifications(Long userId) {
         User user = userRepository.findById(userId)
@@ -240,7 +234,6 @@ public class NotificationService {
         return notificationRepository.existsByUserAndIsReadFalse(user);
     }
 
-    // Get paginated notifications with filters
     @Transactional(readOnly = true)
     public List<Notification> getFilteredNotifications(Long userId, NotificationType type, Boolean isRead, int page, int size) {
         User user = userRepository.findById(userId)

@@ -52,9 +52,6 @@ public class FollowService {
 
         Follow savedFollow = followRepository.save(follow);
 
-        // Update counts
-//        userRepository.updateFollowersCount(followingId, 1);
-//        userRepository.updateFollowingCount(followerId, 1);
 
         // Create notification
         notificationService.createFollowNotification(following, follower);
@@ -160,19 +157,6 @@ public class FollowService {
         return followRepository.findByFollowingOrderByCreatedAtDesc(user, pageable);
     }
 
-    // Get follow suggestions based on followers of followed users
-//    @Transactional(readOnly = true)
-//    public List<User> getFollowSuggestions(Long userId, int limit) {
-//        List<Long> followingIds = getFollowingIds(userId);
-//
-//        if (followingIds.isEmpty()) {
-//            // If not following anyone, return random active users
-//            return userRepository.findTopActiveUsers(limit, userId);
-//        }
-//
-//        // Find users that the people you follow are following (excluding already followed and self)
-//        return userRepository.findFollowSuggestions(userId, followingIds, PageRequest.of(0, limit));
-//    }
 
     // Bulk unfollow
     @Transactional
