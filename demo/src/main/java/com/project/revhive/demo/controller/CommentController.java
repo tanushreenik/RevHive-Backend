@@ -37,7 +37,7 @@ public class CommentController {
         return "Deleted successfully";
     }
 
-    // 🔢 Count comments
+    // Count comments
     @GetMapping("/count")
     public long count(@RequestParam String postId) {
         return service.countComments(postId);
