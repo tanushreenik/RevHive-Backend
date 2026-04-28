@@ -185,4 +185,16 @@ public class FollowService {
             }
         }
     }
+
+    @Transactional(readOnly = true)
+    public List<User> getFollowingUsers(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        // Using method reference instead of lambda
+        return followRepository.findByFollower(user)
+                .stream()
+                .map(Follow::getFollowing)
+                .collect(Collectors.toList());
+    }
 }
