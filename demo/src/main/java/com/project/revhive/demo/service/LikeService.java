@@ -1,6 +1,5 @@
 package com.project.revhive.demo.service;
 
-
 import com.project.revhive.demo.model.Like;
 import com.project.revhive.demo.repository.LikeRepository;
 import org.springframework.stereotype.Service;

@@ -6,6 +6,9 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 
+//@Entity
+//@Table(name = "follows")
+
 @Data
 @Entity
 @Table(name = "follows",
@@ -32,20 +35,4 @@ public class Follow {
     private LocalDateTime createdAt;
 
     private boolean accepted = true;
-
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "follower_id", nullable = false)
-//    private User follower;  // User who follows
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "following_id", nullable = false)
-//    private User following;  // User being followed
-//
-//    @Column(nullable = false, updatable = false)
-//    private Long createdAt;
-//
-//    @PrePersist
-//    protected void onCreate() {
-//        this.createdAt = System.currentTimeMillis();
-//    }
 }
