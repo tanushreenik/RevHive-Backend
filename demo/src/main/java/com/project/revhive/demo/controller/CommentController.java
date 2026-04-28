@@ -10,30 +10,30 @@ import java.util.List;
 @RequestMapping("/comments")
 public class CommentController {
 
-    private final CommentService service;
+    private final CommentService commentService;
 
-    public CommentController(CommentService service) {
-        this.service = service;
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
     }
 
     @PostMapping
     public Comment addComment(@RequestParam Long userId,
                               @RequestParam String postId,
-                              @RequestParam String content,
-                              @RequestParam(required = false) Long parentCommentId) {
+                              @RequestParam String content) {
+        return commentService.addComment(userId, postId, content);
+    }
 
-        return service.addComment(userId, postId, content, parentCommentId);
+    @PostMapping("/reply")
+    public Comment replyToComment(@RequestParam Long userId,
+                                  @RequestParam String postId,
+                                  @RequestParam Long parentCommentId,
+                                  @RequestParam String content) {
+        return commentService.replyToComment(userId, postId, parentCommentId, content);
     }
 
     @GetMapping
     public List<Comment> getComments(@RequestParam String postId) {
-        return service.getComments(postId);
-    }
-
-    @DeleteMapping("/{id}")
-    public String deleteComment(@PathVariable Long id) {
-        service.deleteComment(id);
-        return "Deleted successfully";
+        return commentService.getCommentsByPost(postId);
     }
 
 <<<<<<< HEAD
@@ -41,14 +41,15 @@ public class CommentController {
     // Count comments
 >>>>>>> 96396ec45f12e792c55865a5cd593bf97939a8d8
     @GetMapping("/count")
-    public long count(@RequestParam String postId) {
-        return service.countComments(postId);
+    public long getCommentCount(@RequestParam String postId) {
+        return commentService.getCommentCount(postId);
     }
 <<<<<<< HEAD
 
-    @GetMapping("/replies")
-    public List<Comment> getReplies(@RequestParam Long parentCommentId) {
-        return service.getReplies(parentCommentId);
+    @PutMapping("/edit")
+    public String editComment(@RequestParam Long commentId,
+                              @RequestParam String content) {
+        return commentService.editComment(commentId, content);
     }
 }
 =======

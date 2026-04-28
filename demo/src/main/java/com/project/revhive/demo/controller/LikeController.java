@@ -1,25 +1,38 @@
 package com.project.revhive.demo.controller;
 
 import com.project.revhive.demo.service.LikeService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/likes")
 public class LikeController {
 
-    @Autowired
-    private LikeService likeService;
+    private final LikeService likeService;
 
-    @PostMapping
-    public ResponseEntity<?> like(@RequestParam Long userId,
-                                  @RequestParam String postId) {
-        return ResponseEntity.ok(likeService.toggleLike(userId, postId));
+    public LikeController(LikeService likeService) {
+        this.likeService = likeService;
     }
 
-    @GetMapping("/{postId}")
-    public ResponseEntity<?> getLikes(@PathVariable String postId) {
-        return ResponseEntity.ok(likeService.getLikes(postId));
+    @PostMapping
+    public String addLike(@RequestParam Long userId,
+                          @RequestParam String postId) {
+        return likeService.addLike(userId, postId);
+    }
+
+    @DeleteMapping
+    public String removeLike(@RequestParam Long userId,
+                             @RequestParam String postId) {
+        return likeService.removeLike(userId, postId);
+    }
+
+    @GetMapping("/count")
+    public long getLikeCount(@RequestParam String postId) {
+        return likeService.getLikeCount(postId);
+    }
+
+    @GetMapping("/status")
+    public boolean isLiked(@RequestParam Long userId,
+                           @RequestParam String postId) {
+        return likeService.isLiked(userId, postId);
     }
 }

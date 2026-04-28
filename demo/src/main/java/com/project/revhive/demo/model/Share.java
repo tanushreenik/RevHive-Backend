@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class Comment {
+@Table(name = "shares", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"userId", "postId"})
+})
+public class Share {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,13 +15,10 @@ public class Comment {
 
     private Long userId;
     private String postId;
-    private String content;
 
     private LocalDateTime createdAt;
 
-    private Long parentCommentId;
-
-    // 🔹 Getters & Setters
+    public Share() {}
 
     public Long getId() { return id; }
 
@@ -28,12 +28,6 @@ public class Comment {
     public String getPostId() { return postId; }
     public void setPostId(String postId) { this.postId = postId; }
 
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
-
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public Long getParentCommentId() { return parentCommentId; }
-    public void setParentCommentId(Long parentCommentId) { this.parentCommentId = parentCommentId; }
 }
