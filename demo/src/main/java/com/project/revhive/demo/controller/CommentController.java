@@ -36,13 +36,21 @@ public class CommentController {
         return "Deleted successfully";
     }
 
+<<<<<<< HEAD
+=======
+    // Count comments
+>>>>>>> 96396ec45f12e792c55865a5cd593bf97939a8d8
     @GetMapping("/count")
     public long count(@RequestParam String postId) {
         return service.countComments(postId);
     }
+<<<<<<< HEAD
 
     @GetMapping("/replies")
     public List<Comment> getReplies(@RequestParam Long parentCommentId) {
         return service.getReplies(parentCommentId);
     }
 }
+=======
+}
+>>>>>>> 96396ec45f12e792c55865a5cd593bf97939a8d8
