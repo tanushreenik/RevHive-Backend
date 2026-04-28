@@ -44,7 +44,7 @@
 //}
 
 
-package com.project.revhive.demo.security;
+package com.project.revhive.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -66,6 +66,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-
-
-
