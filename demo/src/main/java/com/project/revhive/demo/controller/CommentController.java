@@ -10,36 +10,48 @@ import java.util.List;
 @RequestMapping("/comments")
 public class CommentController {
 
-    private final CommentService service;
+    private final CommentService commentService;
 
-    public CommentController(CommentService service) {
-        this.service = service;
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
     }
 
-    // ➕ Add comment
     @PostMapping
     public Comment addComment(@RequestParam Long userId,
                               @RequestParam String postId,
                               @RequestParam String content) {
-        return service.addComment(userId, postId, content);
+        return commentService.addComment(userId, postId, content);
     }
 
-    // 📄 Get comments
+    @PostMapping("/reply")
+    public Comment replyToComment(@RequestParam Long userId,
+                                  @RequestParam String postId,
+                                  @RequestParam Long parentCommentId,
+                                  @RequestParam String content) {
+        return commentService.replyToComment(userId, postId, parentCommentId, content);
+    }
+
     @GetMapping
     public List<Comment> getComments(@RequestParam String postId) {
-        return service.getComments(postId);
+        return commentService.getCommentsByPost(postId);
     }
 
-    // 🗑 Delete comment
-    @DeleteMapping("/{id}")
-    public String deleteComment(@PathVariable Long id) {
-        service.deleteComment(id);
-        return "Deleted successfully";
-    }
-
+<<<<<<< HEAD
+=======
     // Count comments
+>>>>>>> 96396ec45f12e792c55865a5cd593bf97939a8d8
     @GetMapping("/count")
-    public long count(@RequestParam String postId) {
-        return service.countComments(postId);
+    public long getCommentCount(@RequestParam String postId) {
+        return commentService.getCommentCount(postId);
+    }
+<<<<<<< HEAD
+
+    @PutMapping("/edit")
+    public String editComment(@RequestParam Long commentId,
+                              @RequestParam String content) {
+        return commentService.editComment(commentId, content);
     }
 }
+=======
+}
+>>>>>>> 96396ec45f12e792c55865a5cd593bf97939a8d8
