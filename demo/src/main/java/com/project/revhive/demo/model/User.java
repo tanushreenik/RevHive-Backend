@@ -1,14 +1,12 @@
 package com.project.revhive.demo.model;
-
-
 import com.project.revhive.demo.enums.Role;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
 @Table(name="users")
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -28,10 +26,15 @@ public class User
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String bio;
     private String avatarUrl;
 
+
+
+    @Builder.Default
     private int followersCount=0;
+    @Builder.Default
     private int followingCount=0;
 
     @Enumerated(EnumType.STRING)
@@ -45,10 +48,13 @@ public class User
 
     private Long updatedAt;
 
+
+
     @PrePersist
     protected void onCreate()
     {
         this.createdAt=System.currentTimeMillis();
+        this.updatedAt=System.currentTimeMillis();
     }
 
     @PreUpdate
@@ -56,8 +62,5 @@ public class User
     {
         this.updatedAt=System.currentTimeMillis();
     }
-
-
-
 
 }

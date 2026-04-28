@@ -5,6 +5,5 @@ public enum NotificationType {
     LIKE,
     COMMENT,
     MENTION,
-    SHARE,
-    BOOKMARK
+    SHARE
 }
