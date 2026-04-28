@@ -1,34 +1,23 @@
 package com.project.revhive.demo.model;
 
 import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
-@Table(name = "likes", uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "post_id"}))
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Table(name = "likes")
 public class Like {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Long userId;
+    private String postId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
+    public Long getId() { return id; }
 
-    @Column(nullable = false, updatable = false)
-    private Long createdAt;
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = System.currentTimeMillis();
-    }
+    public String getPostId() { return postId; }
+    public void setPostId(String postId) { this.postId = postId; }
 }

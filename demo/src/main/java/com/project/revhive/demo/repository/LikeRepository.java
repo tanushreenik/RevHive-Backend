@@ -1,23 +1,16 @@
 package com.project.revhive.demo.repository;
 
 import com.project.revhive.demo.model.Like;
-import com.project.revhive.demo.model.Post;
-import com.project.revhive.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
 
-    boolean existsByUserAndPost(User user, Post post);
+    long countByPostId(String postId);
 
-    Optional<Like> findByUserAndPost(User user, Post post);
+    boolean existsByUserIdAndPostId(Long userId, String postId);
 
-    void deleteByUserIdAndPostId(Long userId, Long postId);
-
-    long countByPostId(Long postId);
-
-    boolean existsByUserIdAndPostId(Long userId, Long postId);
+    void deleteByUserIdAndPostId(Long userId, String postId);
 }

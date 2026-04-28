@@ -62,7 +62,7 @@ public class PostService {
             throw new RuntimeException("Post has been deleted");
         }
 
-        boolean isLiked = likeService.isPostLikedByUser(currentUserId, postId);
+        boolean isLiked = likeService.isLiked(currentUserId, String.valueOf(postId));
         return PostResponse.fromPost(post, isLiked);
     }
 
@@ -76,10 +76,9 @@ public class PostService {
 
         return posts.map(post -> PostResponse.fromPost(
                 post,
-                likeService.isPostLikedByUser(currentUserId, post.getId())
+                likeService.isLiked(currentUserId, String.valueOf(post.getId()))
         ));
     }
-
 
     @Transactional(readOnly = true)
     public Page<PostResponse> getFeedPosts(Long userId, int page, int size) {
@@ -98,7 +97,7 @@ public class PostService {
 
         return posts.map(post -> PostResponse.fromPost(
                 post,
-                likeService.isPostLikedByUser(userId, post.getId())
+                likeService.isLiked(userId, String.valueOf(post.getId()))
         ));
     }
 
@@ -109,7 +108,7 @@ public class PostService {
 
         return posts.map(post -> PostResponse.fromPost(
                 post,
-                likeService.isPostLikedByUser(currentUserId, post.getId())
+                likeService.isLiked(currentUserId, String.valueOf(post.getId()))
         ));
     }
 
@@ -117,7 +116,6 @@ public class PostService {
     public PostResponse updatePost(Long postId, Long userId, PostRequest postRequest) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found with id: " + postId));
-
 
         if (!post.isActive()) {
             throw new RuntimeException("Cannot update deleted post");
@@ -130,7 +128,7 @@ public class PostService {
         Post updatedPost = postRepository.save(post);
         log.info("Post {} updated by user {}", postId, userId);
 
-        boolean isLiked = likeService.isPostLikedByUser(userId, postId);
+        boolean isLiked = likeService.isLiked(userId, String.valueOf(postId));
         return PostResponse.fromPost(updatedPost, isLiked);
     }
 
@@ -140,7 +138,6 @@ public class PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found with id: " + postId));
 
-
         int deleted = postRepository.softDeletePost(postId, userId, System.currentTimeMillis());
         if (deleted == 0) {
             throw new RuntimeException("Failed to delete post");
@@ -149,7 +146,7 @@ public class PostService {
         log.info("Post {} soft deleted by user {}", postId, userId);
     }
 
-    // Like post
+    // Like post - Updated to match LikeService naming convention
     @Transactional
     public void likePost(Long postId, Long userId) {
         Post post = postRepository.findById(postId)
@@ -162,32 +159,40 @@ public class PostService {
             throw new RuntimeException("Cannot like deleted post");
         }
 
+        // Use LikeService methods consistently
+        String result = likeService.addLike(userId, String.valueOf(postId));
 
-        if (likeService.isPostLikedByUser(userId, postId)) {
+        if ("Already liked".equals(result)) {
             throw new RuntimeException("Already liked this post");
         }
 
-
-        likeService.createLike(user, post);
-
-
-        postRepository.updateLikeCount(postId, 1);
+        // Update post like count
+        post.setLikeCount(post.getLikeCount() + 1);
+        postRepository.save(post);
 
         log.info("User {} liked post {}", userId, postId);
     }
 
-    // Unlike post
+    // Unlike post - Updated to match LikeService naming convention
     @Transactional
     public void unlikePost(Long postId, Long userId) {
-        if (!likeService.isPostLikedByUser(userId, postId)) {
+        // Check if liked using LikeService
+        if (!likeService.isLiked(userId, String.valueOf(postId))) {
             throw new RuntimeException("Post not liked yet");
         }
 
-        // Delete like record
-        likeService.deleteLike(userId, postId);
+        // Remove like using LikeService
+        String result = likeService.removeLike(userId, String.valueOf(postId));
+
+        if ("Like not found".equals(result)) {
+            throw new RuntimeException("Like not found");
+        }
 
         // Update post like count
-        postRepository.updateLikeCount(postId, -1);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found with id: " + postId));
+        post.setLikeCount(Math.max(0, post.getLikeCount() - 1));
+        postRepository.save(post);
 
         log.info("User {} unliked post {}", userId, postId);
     }
@@ -201,7 +206,7 @@ public class PostService {
         return trendingPosts.stream()
                 .map(post -> PostResponse.fromPost(
                         post,
-                        likeService.isPostLikedByUser(currentUserId, post.getId())
+                        likeService.isLiked(currentUserId, String.valueOf(post.getId()))
                 ))
                 .collect(Collectors.toList());
     }
@@ -220,19 +225,25 @@ public class PostService {
 
         return posts.map(post -> PostResponse.fromPost(
                 post,
-                likeService.isPostLikedByUser(currentUserId, post.getId())
+                likeService.isLiked(currentUserId, String.valueOf(post.getId()))
         ));
     }
 
     // Update comment count
     @Transactional
     public void updateCommentCount(Long postId, int increment) {
-        postRepository.updateCommentCount(postId, increment);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found with id: " + postId));
+        post.setCommentCount(post.getCommentCount() + increment);
+        postRepository.save(post);
     }
 
     // Update share count
     @Transactional
     public void updateShareCount(Long postId, int increment) {
-        postRepository.updateShareCount(postId, increment);
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found with id: " + postId));
+        post.setShareCount(post.getShareCount() + increment);
+        postRepository.save(post);
     }
 }

@@ -1,43 +1,51 @@
 package com.project.revhive.demo.service;
 
+
 import com.project.revhive.demo.model.Like;
-import com.project.revhive.demo.model.Post;
-import com.project.revhive.demo.model.User;
 import com.project.revhive.demo.repository.LikeRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
-@Slf4j
 public class LikeService {
 
     private final LikeRepository likeRepository;
 
-    @Transactional
-    public Like createLike(User user, Post post) {
-        Like like = Like.builder()
-                .user(user)
-                .post(post)
-                .build();
-
-        return likeRepository.save(like);
+    public LikeService(LikeRepository likeRepository) {
+        this.likeRepository = likeRepository;
     }
 
-    @Transactional
-    public void deleteLike(Long userId, Long postId) {
-        likeRepository.deleteByUserIdAndPostId(userId, postId);
+    public String addLike(Long userId, String postId) {
+
+        if (likeRepository.existsByUserIdAndPostId(userId, postId)) {
+            return "Already liked";
+        }
+
+        Like like = new Like();
+        like.setUserId(userId);
+        like.setPostId(postId);
+
+        likeRepository.save(like);
+        return "Liked successfully";
     }
 
-    @Transactional(readOnly = true)
-    public boolean isPostLikedByUser(Long userId, Long postId) {
-        return likeRepository.existsByUserIdAndPostId(userId, postId);
-    }
+    public String removeLike(Long userId, String postId) {
 
-    @Transactional(readOnly = true)
-    public long getPostLikeCount(Long postId) {
+        return likeRepository.findAll()
+                .stream()
+                .filter(like -> like.getUserId().equals(userId)
+                        && like.getPostId().equals(postId))
+                .findFirst()
+                .map(like -> {
+                    likeRepository.delete(like);
+                    return "Unliked successfully";
+                })
+                .orElse("Like not found");
+    }
+    public long getLikeCount(String postId) {
         return likeRepository.countByPostId(postId);
+    }
+
+    public boolean isLiked(Long userId, String postId) {
+        return likeRepository.existsByUserIdAndPostId(userId, postId);
     }
 }
