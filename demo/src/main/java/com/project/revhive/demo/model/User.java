@@ -2,7 +2,11 @@ package com.project.revhive.demo.model;
 import com.project.revhive.demo.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
 import lombok.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="users")
@@ -47,6 +51,11 @@ public class User
     private Long createdAt;
 
     private Long updatedAt;
+
+
+    @Past(message = "DOB must be in the past")
+    @Column(nullable = false)
+    private LocalDate dob;
 
 
 
