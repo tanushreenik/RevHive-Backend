@@ -6,9 +6,6 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 
-//@Entity
-//@Table(name = "follows")
-
 @Data
 @Entity
 @Table(name = "follows",
@@ -35,4 +32,6 @@ public class Follow {
     private LocalDateTime createdAt;
 
     private boolean accepted = true;
+
+
 }

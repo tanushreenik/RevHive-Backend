@@ -1,4 +1,5 @@
 package com.project.revhive.demo.security;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
@@ -22,18 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JWTUtil JWTUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
-
-        String path = request.getServletPath();
-
-
-        if (path.equals("/api/auth/login") || path.equals("/api/auth/register")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
 
@@ -42,17 +32,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        try {
-            String token = authHeader.substring(7);
+        try
+        {
+            String token =authHeader.substring(7);
 
-            Claims claims = Jwts.parserBuilder()
+            Claims claims= Jwts.parserBuilder()
                     .setSigningKey(JWTUtil.getSigningKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
 
-            String email = claims.getSubject();
-            String role = claims.get("role", String.class);
+            String email=claims.getSubject();
+            String role=claims.get("role",String.class);
 
             UsernamePasswordAuthenticationToken auth =
                     new UsernamePasswordAuthenticationToken(
@@ -65,11 +56,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .buildDetails(request));
 
             SecurityContextHolder.getContext().setAuthentication(auth);
-
-        } catch (Exception e) {
-            System.out.println("JWT Error " + e.getMessage());
         }
+        catch (Exception e)
+        {
+            System.out.println("JWT Error   "+e.getMessage());
+        }
+        filterChain.doFilter(request,response);
 
-        filterChain.doFilter(request, response);
+
+
     }
 }
