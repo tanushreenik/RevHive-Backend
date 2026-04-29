@@ -7,6 +7,7 @@ import com.project.revhive.demo.dto.response.LoginResponse;
 import com.project.revhive.demo.enums.Role;
 import com.project.revhive.demo.model.User;
 import com.project.revhive.demo.repository.UserRepository;
+import com.project.revhive.demo.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +20,7 @@ public class UserService {
     private static final Logger logger=  LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
+    private final JWTUtil JWTUtil;
 
   public User register(RegisterRequest registerRequest)
   {
@@ -62,7 +63,7 @@ public class UserService {
           throw new RuntimeException("Invalid password");
       }
 
-      String token= jwtService.generateToken(user);
+      String token= JWTUtil.generateToken(user);
       logger.info("User logged in successfully: {}",user.getEmail());
 
       return LoginResponse.builder()

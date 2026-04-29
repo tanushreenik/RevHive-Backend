@@ -1,5 +1,4 @@
 package com.project.revhive.demo.security;
-import com.project.revhive.demo.service.JwtService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
@@ -20,7 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+    private final JWTUtil JWTUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -37,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String token =authHeader.substring(7);
 
             Claims claims= Jwts.parserBuilder()
-                    .setSigningKey(jwtService.secretKey())
+                    .setSigningKey(JWTUtil.secretKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();

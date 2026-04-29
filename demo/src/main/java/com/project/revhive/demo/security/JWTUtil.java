@@ -1,9 +1,8 @@
-package com.project.revhive.demo.service;
+package com.project.revhive.demo.security;
 
 
 import com.project.revhive.demo.model.User;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.InvalidKeyException;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,7 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Service
-public class JwtService {
+public class JWTUtil {
     private final String SECRET_KEY = "mySuperSecretKeyThatIsAtLeast32BytesLong!";
 
     private final SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
