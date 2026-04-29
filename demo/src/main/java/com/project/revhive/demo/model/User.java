@@ -48,9 +48,12 @@ public class User
     private boolean isActive=true;
 
     @Column(updatable = false)
-    private Long createdAt;
+    private LocalDateTime createdAt;
 
-    private Long updatedAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime lastActive;
+
+
 
 
     @Past(message = "DOB must be in the past")
@@ -58,18 +61,17 @@ public class User
     private LocalDate dob;
 
 
-
     @PrePersist
     protected void onCreate()
     {
-        this.createdAt=System.currentTimeMillis();
-        this.updatedAt=System.currentTimeMillis();
+        this.createdAt=LocalDateTime.now();
+        this.updatedAt=LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate()
     {
-        this.updatedAt=System.currentTimeMillis();
+        this.updatedAt=LocalDateTime.now();
     }
 
 }
