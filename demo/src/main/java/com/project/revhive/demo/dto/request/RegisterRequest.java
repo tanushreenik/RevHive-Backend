@@ -1,9 +1,13 @@
 package com.project.revhive.demo.dto.request;
 
+import com.project.revhive.demo.validation.Adult;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.time.LocalDate;
 
 @Data
 public class RegisterRequest {
@@ -21,6 +25,14 @@ public class RegisterRequest {
     @NotBlank(message = "Bio is required")
     @Size(min=10,max=100, message = "Bio must be between 10 to 100 characters")
     private String bio;
+
+    @Past(message = "DOB must be in the past")
+    @Adult
+    private LocalDate dob;
+
+
+
+
 
 
 //    @NotBlank(message = "Avatar URL is required")
