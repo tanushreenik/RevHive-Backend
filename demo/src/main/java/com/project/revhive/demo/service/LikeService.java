@@ -2,35 +2,49 @@ package com.project.revhive.demo.service;
 
 import com.project.revhive.demo.model.Like;
 import com.project.revhive.demo.repository.LikeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class LikeService {
 
-    @Autowired
-    private LikeRepository likeRepository;
+    private final LikeRepository likeRepository;
 
-    public String toggleLike(Long userId, String postId) {
-
-        Optional<Like> existing = likeRepository.findByUserIdAndPostId(userId, postId);
-
-        if (existing.isPresent()) {
-            likeRepository.delete(existing.get());
-            return "Unliked";
-        } else {
-            Like like = new Like();
-            like.setUserId(userId);
-            like.setPostId(postId);
-            likeRepository.save(like);
-            return "Liked";
-        }
+    public LikeService(LikeRepository likeRepository) {
+        this.likeRepository = likeRepository;
     }
 
-    public List<Like> getLikes(String postId) {
-        return likeRepository.findByPostId(postId);
+    public String addLike(Long userId, String postId) {
+
+        if (likeRepository.existsByUserIdAndPostId(userId, postId)) {
+            return "Already liked";
+        }
+
+        Like like = new Like();
+        like.setUserId(userId);
+        like.setPostId(postId);
+
+        likeRepository.save(like);
+        return "Liked successfully";
+    }
+
+    public String removeLike(Long userId, String postId) {
+
+        return likeRepository.findAll()
+                .stream()
+                .filter(like -> like.getUserId().equals(userId)
+                        && like.getPostId().equals(postId))
+                .findFirst()
+                .map(like -> {
+                    likeRepository.delete(like);
+                    return "Unliked successfully";
+                })
+                .orElse("Like not found");
+    }
+    public long getLikeCount(String postId) {
+        return likeRepository.countByPostId(postId);
+    }
+
+    public boolean isLiked(Long userId, String postId) {
+        return likeRepository.existsByUserIdAndPostId(userId, postId);
     }
 }

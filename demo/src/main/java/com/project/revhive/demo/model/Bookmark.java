@@ -3,8 +3,11 @@ package com.project.revhive.demo.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "likes")
-public class Like {
+@Table(
+        name = "bookmarks",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"userId", "postId"})
+)
+public class Bookmark {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
