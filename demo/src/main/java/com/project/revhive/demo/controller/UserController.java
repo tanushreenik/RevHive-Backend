@@ -47,24 +47,5 @@ public class UserController {
         logger.info("Login Successfull ");
         return ResponseEntity.ok(response);
     }
-    @GetMapping("/me")
-    public ResponseEntity<?> getCurrentUser(Authentication authentication) {
 
-        if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(401).body("Unauthorized");
-        }
-
-        String email = authentication.getName();
-
-        User currentUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-
-        if (currentUser.getRole().name().equals("ADMIN")) {
-            return ResponseEntity.ok(userRepository.findAll());
-        }
-
-
-        return ResponseEntity.ok(currentUser);
-    }
 }
