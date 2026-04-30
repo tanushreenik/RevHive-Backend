@@ -1,13 +1,12 @@
-package com.project.revhive.config;
+package com.project.revhive.demo.config;
 
 import com.project.revhive.demo.security.JWTUtil;
-import com.project.revhive.security.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.*;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.*;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
-
 @Component
 @RequiredArgsConstructor
 public class WebSocketAuthInterceptor implements ChannelInterceptor {

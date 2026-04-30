@@ -1,4 +1,4 @@
-package com.project.revhive.config;
+package com.project.revhive.demo.config;
 
 import com.project.revhive.demo.config.WebSocketAuthInterceptor;
 import lombok.RequiredArgsConstructor;
