@@ -47,6 +47,11 @@ public interface UserRepository extends JpaRepository<User,Long> {
     long getMonthlyActiveUsers(@Param("date") LocalDateTime date);
 
 
+//    List<User> findbyNameOrEmail(String email,String name);
+
+//    List <User> findByStatus(User.s)
+
+
 
 
 }
