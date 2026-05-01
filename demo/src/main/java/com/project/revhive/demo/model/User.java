@@ -1,5 +1,6 @@
 package com.project.revhive.demo.model;
 import com.project.revhive.demo.enums.Role;
+import com.project.revhive.demo.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
@@ -73,5 +74,9 @@ public class User
     {
         this.updatedAt=LocalDateTime.now();
     }
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status;
 
 }
