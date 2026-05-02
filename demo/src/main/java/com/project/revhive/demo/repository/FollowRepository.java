@@ -16,44 +16,35 @@ import java.util.Optional;
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
 
-    // Check if a follow relationship exists
     boolean existsByFollowerAndFollowing(User follower, User following);
 
-    // Find follow relationship between two users
     Optional<Follow> findByFollowerAndFollowing(User follower, User following);
 
-    // Get all followers of a user
     List<Follow> findByFollowing(User following);
 
-    // Get all users that a user is following
     List<Follow> findByFollower(User follower);
-
-    // Get followers count for a user
+ 
     long countByFollowing(User following);
 
-    // Get following count for a user
     long countByFollower(User follower);
 
-    // Get followers with pagination
     List<Follow> findByFollowing(User following, Pageable pageable);
 
-    // Get following with pagination
+   
     List<Follow> findByFollower(User follower, Pageable pageable);
 
-    // Get follower IDs for a user
+    
     @Query("SELECT f.follower.id FROM Follow f WHERE f.following.id = :userId")
     List<Long> findFollowerIdsByFollowingId(@Param("userId") Long userId);
 
-    // Get following IDs for a user
+ 
     @Query("SELECT f.following.id FROM Follow f WHERE f.follower.id = :userId")
     List<Long> findFollowingIdsByFollowerId(@Param("userId") Long userId);
 
-    // Delete follow relationship
     @Modifying
     @Transactional
     void deleteByFollowerAndFollowing(User follower, User following);
 
-    // Check if user is following another user
     @Query("SELECT COUNT(f) > 0 FROM Follow f WHERE f.follower.id = :followerId AND f.following.id = :followingId")
     boolean isFollowing(@Param("followerId") Long followerId, @Param("followingId") Long followingId);
 
