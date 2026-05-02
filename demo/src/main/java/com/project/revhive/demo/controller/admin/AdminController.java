@@ -1,4 +1,4 @@
-package com.project.revhive.demo.controller;
+package com.project.revhive.demo.controller.admin;
 
 import com.project.revhive.demo.model.User;
 import com.project.revhive.demo.repository.UserRepository;

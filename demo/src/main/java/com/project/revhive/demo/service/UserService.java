@@ -53,25 +53,32 @@ public class UserService {
   }
 
 
-  public LoginResponse login(LoginRequest loginRequest)
-  {
-      User user=userRepository.findByEmailOrUsername(loginRequest.getUserNameOrEmail(),loginRequest.getUserNameOrEmail())
-              .orElseThrow(()-> new RuntimeException("User not found"));
+    public LoginResponse login(LoginRequest loginRequest) {
+        User user = userRepository
+                .findByEmailOrUsername(
+                        loginRequest.getUserNameOrEmail(),
+                        loginRequest.getUserNameOrEmail()
+                )
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-      if(!passwordEncoder.matches(loginRequest.getPassword(),user.getPassword()))
-      {
-          throw new RuntimeException("Invalid password");
-      }
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
 
-      String token= JWTUtil.generateToken(user);
-      logger.info("User logged in successfully: {}",user.getEmail());
+        String token;
+        try {
+            token = JWTUtil.generateToken(user);
+        } catch (Exception e) {
+            throw new RuntimeException("Token generation failed: " + e.getMessage());
+        }
 
-      return LoginResponse.builder()
-              .token(token)
-              .username(user.getUsername())
-              .email(user.getEmail())
-              .role(user.getRole().name())
-              .build();
-  }
+        return LoginResponse.builder()
+                .token(token)
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .role(user.getRole().name())
+                .build();
+    }
 
 }

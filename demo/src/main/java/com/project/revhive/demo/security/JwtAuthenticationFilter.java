@@ -25,6 +25,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        if (request.getServletPath().startsWith("/api/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         final String authHeader = request.getHeader("Authorization");
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -32,18 +37,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        try
-        {
-            String token =authHeader.substring(7);
+        try {
+            String token = authHeader.substring(7);
 
-            Claims claims= Jwts.parserBuilder()
+            Claims claims = Jwts.parserBuilder()
                     .setSigningKey(JWTUtil.getSigningKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
 
-            String email=claims.getSubject();
-            String role=claims.get("role",String.class);
+            String email = claims.getSubject();
+            String role = claims.get("role", String.class);
 
             UsernamePasswordAuthenticationToken auth =
                     new UsernamePasswordAuthenticationToken(
@@ -52,18 +56,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             List.of(new SimpleGrantedAuthority("ROLE_" + role))
                     );
 
-            auth.setDetails(new org.springframework.security.web.authentication.WebAuthenticationDetailsSource()
-                    .buildDetails(request));
+            auth.setDetails(
+                    new org.springframework.security.web.authentication.WebAuthenticationDetailsSource()
+                            .buildDetails(request)
+            );
 
             SecurityContextHolder.getContext().setAuthentication(auth);
+
+        } catch (Exception e) {
+            System.out.println("JWT Error   " + e.getMessage());
         }
-        catch (Exception e)
-        {
-            System.out.println("JWT Error   "+e.getMessage());
-        }
-        filterChain.doFilter(request,response);
 
-
-
+        filterChain.doFilter(request, response);
     }
 }
