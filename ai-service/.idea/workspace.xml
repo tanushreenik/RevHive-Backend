@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5b5b991d-3f19-4b0c-a279-056c4abd9718" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/chains/moderation.py" beforeDir="false" afterPath="$PROJECT_DIR$/chains/moderation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +36,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "feature/ai-moderation",
+    "git-widget-placeholder": "feature/ai-main",
     "last_opened_file_path": "D:/Revature-JAVA/RevHive/revhive-backend/ai-service"
   }
 }]]></component>
