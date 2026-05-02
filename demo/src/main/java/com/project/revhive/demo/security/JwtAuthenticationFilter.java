@@ -1,5 +1,5 @@
 package com.project.revhive.demo.security;
-import com.project.revhive.demo.service.JwtService;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
@@ -20,10 +20,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+    private final JWTUtil JWTUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+
+        if (request.getServletPath().startsWith("/api/auth")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         final String authHeader = request.getHeader("Authorization");
 
@@ -32,31 +37,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        try
-        {
-            String token =authHeader.substring(7);
+        try {
+            String token = authHeader.substring(7);
 
-            Claims claims= Jwts.parserBuilder()
-                    .setSigningKey(jwtService.secretKey())
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(JWTUtil.getSigningKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
 
-            String email=claims.getSubject();
-            String role=claims.get("role",String.class);
+            String email = claims.getSubject();
+            String role = claims.get("role", String.class);
 
+            UsernamePasswordAuthenticationToken auth =
+                    new UsernamePasswordAuthenticationToken(
+                            email,
+                            null,
+                            List.of(new SimpleGrantedAuthority("ROLE_" + role))
+                    );
 
-            UsernamePasswordAuthenticationToken auth= new UsernamePasswordAuthenticationToken(email,null, List.of(new SimpleGrantedAuthority("ROLE_"+role)));
+            auth.setDetails(
+                    new org.springframework.security.web.authentication.WebAuthenticationDetailsSource()
+                            .buildDetails(request)
+            );
 
             SecurityContextHolder.getContext().setAuthentication(auth);
+
+        } catch (Exception e) {
+            System.out.println("JWT Error   " + e.getMessage());
         }
-        catch (Exception e)
-        {
-            System.out.println("JWT Error   "+e.getMessage());
-        }
-        filterChain.doFilter(request,response);
 
-
-
+        filterChain.doFilter(request, response);
     }
 }

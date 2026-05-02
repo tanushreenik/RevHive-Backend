@@ -1,5 +1,6 @@
 package com.project.revhive.demo.model;
 import com.project.revhive.demo.enums.Role;
+import com.project.revhive.demo.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
@@ -48,9 +49,12 @@ public class User
     private boolean isActive=true;
 
     @Column(updatable = false)
-    private Long createdAt;
+    private LocalDateTime createdAt;
 
-    private Long updatedAt;
+    private LocalDateTime updatedAt;
+    private LocalDateTime lastActive;
+
+
 
 
     @Past(message = "DOB must be in the past")
@@ -58,18 +62,21 @@ public class User
     private LocalDate dob;
 
 
-
     @PrePersist
     protected void onCreate()
     {
-        this.createdAt=System.currentTimeMillis();
-        this.updatedAt=System.currentTimeMillis();
+        this.createdAt=LocalDateTime.now();
+        this.updatedAt=LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate()
     {
-        this.updatedAt=System.currentTimeMillis();
+        this.updatedAt=LocalDateTime.now();
     }
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Status status;
 
 }

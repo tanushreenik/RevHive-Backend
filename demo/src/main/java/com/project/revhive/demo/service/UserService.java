@@ -7,6 +7,7 @@ import com.project.revhive.demo.dto.response.LoginResponse;
 import com.project.revhive.demo.enums.Role;
 import com.project.revhive.demo.model.User;
 import com.project.revhive.demo.repository.UserRepository;
+import com.project.revhive.demo.security.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +20,7 @@ public class UserService {
     private static final Logger logger=  LoggerFactory.getLogger(UserService.class);
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtService jwtService;
+    private final JWTUtil JWTUtil;
 
   public User register(RegisterRequest registerRequest)
   {
@@ -52,25 +53,32 @@ public class UserService {
   }
 
 
-  public LoginResponse login(LoginRequest loginRequest)
-  {
-      User user=userRepository.findByEmailOrUsername(loginRequest.getUserNameOrEmail(),loginRequest.getUserNameOrEmail())
-              .orElseThrow(()-> new RuntimeException("User not found"));
+    public LoginResponse login(LoginRequest loginRequest) {
+        User user = userRepository
+                .findByEmailOrUsername(
+                        loginRequest.getUserNameOrEmail(),
+                        loginRequest.getUserNameOrEmail()
+                )
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-      if(!passwordEncoder.matches(loginRequest.getPassword(),user.getPassword()))
-      {
-          throw new RuntimeException("Invalid password");
-      }
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
 
-      String token= jwtService.generateToken(user);
-      logger.info("User logged in successfully: {}",user.getEmail());
+        String token;
+        try {
+            token = JWTUtil.generateToken(user);
+        } catch (Exception e) {
+            throw new RuntimeException("Token generation failed: " + e.getMessage());
+        }
 
-      return LoginResponse.builder()
-              .token(token)
-              .username(user.getUsername())
-              .email(user.getEmail())
-              .role(user.getRole().name())
-              .build();
-  }
+        return LoginResponse.builder()
+                .token(token)
+                .id(user.getId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .role(user.getRole().name())
+                .build();
+    }
 
 }
