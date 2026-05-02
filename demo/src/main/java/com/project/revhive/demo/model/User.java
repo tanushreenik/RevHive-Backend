@@ -75,8 +75,8 @@ public class User
         this.updatedAt=LocalDateTime.now();
     }
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Status status;
+//    @Enumerated(EnumType.STRING)
+//    @Column(nullable = false)
+//    private Status status;
 
 }
