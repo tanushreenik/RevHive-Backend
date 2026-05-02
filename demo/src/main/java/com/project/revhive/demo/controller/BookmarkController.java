@@ -9,13 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Tag(name="Bookmark Controller ", description = "All the operation related to post bookmark are performed here")
 @RestController
 @RequestMapping("/bookmarks")
 public class BookmarkController {
-    private static final Logger logger= LoggerFactory.getILoggerFactory(BookmarkController.class);
+    private static final Logger logger = LoggerFactory.getLogger(BookmarkController.class);
     private final BookmarkService bookmarkService;
 
     public BookmarkController(BookmarkService bookmarkService) {
@@ -44,7 +45,7 @@ public class BookmarkController {
 
     @Operation(summary = "Get all the post bookmarked by the user")
     @GetMapping
-    @GetMapping
+
     public List<Bookmark> getBookmarks(@RequestParam Long userId) {
 
         logger.info("Fetching bookmarks for userId");
