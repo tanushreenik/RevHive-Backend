@@ -41,7 +41,6 @@ public class UserController {
     }
 
 
-
      @Operation(summary = "User login endpoint and generate JWT Token")
      @PostMapping("/login")
      public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest)
