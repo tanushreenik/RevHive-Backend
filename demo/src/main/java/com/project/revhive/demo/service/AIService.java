@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class AIService {
     @Autowired
     private AIContentConfig config;
-    private final String PYTHON_CONNECTIN_URL="http://localhostL800/api";
+    private final String PYTHON_CONNECTIN_URL="http://localhost:8000/ai";
 
     public String process(AIRequest request)
     {

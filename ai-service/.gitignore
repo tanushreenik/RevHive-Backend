@@ -22,13 +22,5 @@ out/
 .DS_Store
 Thumbs.db
 
-# Env files
+# Env
 .env
-
-# Java (Spring Boot)
-target/
-*.jar
-*.war
-
-# Node (if any)
-node_modules/
