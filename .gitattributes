@@ -1,2 +1,3 @@
 ai-service/** linguist-vendored
-*.py linguist-detectable=false
+ai-service/** linguist-generated
+*.py linguist-vendored
