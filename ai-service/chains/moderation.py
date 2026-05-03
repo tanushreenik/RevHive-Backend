@@ -1,6 +1,6 @@
 from langchain_community.chat_models import ChatOllama
 
-llm = ChatOllama(model="llama3")
+llm = ChatOllama(model="phi3")
 
 def moderate_text(text):
     prompt = f"""
