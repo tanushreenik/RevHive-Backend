@@ -1,4 +1,4 @@
-# 🚀 RevHive Backend
+#  RevHive Backend
 
 Backend service for **RevHive**, a social platform with authentication, real-time chat, AI-powered features, and premium subscriptions.
 
@@ -167,7 +167,7 @@ backend/
 
 ## 👨‍💻 Author
 
-**Sourav**
+** Team RevHive **
 
 ---
 
