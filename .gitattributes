@@ -1,1 +1,3 @@
+# Force GitHub to detect Java files
+*.java linguist-detectable=true
 *.java linguist-language=Java
