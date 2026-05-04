@@ -1,5 +1,1 @@
-#ai-service/** linguist-vendored
-*.java linguist-detectable=true
-*.py linguist-detectable=true
-
-demo/** linguist-detectable=true
+*.java linguist-language=Java
