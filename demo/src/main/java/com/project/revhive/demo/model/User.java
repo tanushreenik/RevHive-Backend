@@ -54,6 +54,9 @@ public class User
     private LocalDateTime updatedAt;
     private LocalDateTime lastActive;
 
+    private String resetToken;
+    private  LocalDateTime tokenExpiry;
+
 
 
 
