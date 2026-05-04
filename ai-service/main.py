@@ -13,6 +13,7 @@ class AIRequest(BaseModel):
     type: str
     content: str
 
+# Contains python main files
 @app.post("/ai")
 def process(req: AIRequest):
 
