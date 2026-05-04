@@ -57,14 +57,14 @@ public class User
     private String resetToken;
     private  LocalDateTime tokenExpiry;
 
-
+    private boolean premium;
 
 
     @Past(message = "DOB must be in the past")
     @Column(nullable = false)
     private LocalDate dob;
 
-
+    private LocalDate premiumExpiry;
     @PrePersist
     protected void onCreate()
     {
