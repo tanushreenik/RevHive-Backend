@@ -1,50 +1,33 @@
-#  RevHive
+# 🚀 RevHive Backend
 
-A full-stack social platform with AI-powered features, premium subscriptions, and real-time interactions.
-
-## 📌 Features
-
- 🔐 Authentication (Login / Register / Forgot Password)
- 👥 Follow system (only followers can chat)
- 💬 Real-time chat (WebSocket based)
- 🧠 AI Features:
-
-  * Caption Generator
-  * Hashtag Generator
-  * Summarizer
-  * Moderation
- 💎 Premium System
-
-  * Premium badge
-  * Expiry handling
-    
-* 📊 Admin Dashboard
-* 🎨 Modern Neon UI
+Backend service for **RevHive**, a social platform with authentication, real-time chat, AI-powered features, and premium subscriptions.
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Frontend
+* **Java (Spring Boot)**
+* **Spring Security (JWT Authentication)**
+* **Spring Data JPA (Hibernate)**
+* **WebSocket (Real-time Chat)**
+* **MySQL (Database)**
+* **JavaMailSender (Email Service)**
 
-* React.js
-* Tailwind CSS
-* Framer Motion
+---
 
-### Backend
+## 📌 Features
 
-* Spring Boot (Java)
-* REST APIs
-* WebSocket
+* 🔐 User Authentication (Login / Register)
+* 🔑 Forgot Password (Email-based reset)
+* 👥 Follow System (only followers can interact/chat)
+* 💬 Real-time Chat using WebSockets
+* 🧠 AI APIs integration (Caption, Hashtag, Summary)
+* 💎 Premium System
 
-### Database
-
-* MySQL
-
-### Others
-
-* Firebase (File Uploads)
-* AI APIs (for content generation)
+  * Enable/Disable premium users
+  * Premium expiry management
+* 📊 Admin APIs
+* 📧 Email Service (for password reset)
 
 ---
 
@@ -54,86 +37,140 @@ A full-stack social platform with AI-powered features, premium subscriptions, an
 
 ```bash
 git clone https://github.com/your-username/RevHive.git
-cd RevHive
+cd RevHive/backend
 ```
 
-### 2. Backend Setup (Spring Boot)
+---
 
-```bash
-cd backend
-```
+### 2. Configure Database
 
-Configure `application.properties`:
+Update `application.properties`:
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/revhive
 spring.datasource.username=YOUR_USERNAME
 spring.datasource.password=YOUR_PASSWORD
+
 spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
 ```
 
-Run backend:
+---
+
+### 3. Configure Email (Forgot Password)
+
+```properties
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=YOUR_EMAIL
+spring.mail.password=YOUR_APP_PASSWORD
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+```
+
+---
+
+### 4. Run the Application
 
 ```bash
 mvn spring-boot:run
 ```
 
----
+Server runs on:
 
-### 3. Frontend Setup (React)
-
-```bash
-cd frontend
-npm install
-npm run dev
+```
+http://localhost:8080
 ```
 
 ---
 
-## 🔐 Forgot Password Flow
+## 🔐 Authentication APIs
 
-1. User enters email
-2. Backend sends reset link via email
-3. User opens link → frontend reset page
-4. User sets new password
+| Method | Endpoint           | Description      |
+| ------ | ------------------ | ---------------- |
+| POST   | /api/auth/register | Register user    |
+| POST   | /api/auth/login    | Login user       |
+| POST   | /api/auth/forgot   | Send reset email |
+| POST   | /api/auth/reset    | Reset password   |
 
 ---
 
-## 🌐 API Base URL
+## 👥 User & Follow APIs
+
+| Method | Endpoint             | Description        |
+| ------ | -------------------- | ------------------ |
+| POST   | /api/follow/{userId} | Follow a user      |
+| GET    | /api/followers       | Get followers list |
+| GET    | /api/following       | Get following list |
+
+---
+
+## 💬 Chat (WebSocket)
+
+* Endpoint:
 
 ```
-http://localhost:8080/api
+ws://localhost:8080/ws
 ```
+
+* Condition:
+  Only users who follow each other can chat.
+
+---
+
+## 💎 Premium System
+
+* `isPremium` → boolean flag
+* `premiumExpiry` → expiry date
+
+Example:
+
+```java
+user.setPremium(true);
+user.setPremiumExpiry(LocalDate.now().plusMonths(1));
+```
+
+---
+
+## 📧 Forgot Password Flow
+
+1. User submits email
+2. Backend generates token
+3. Email sent with reset link
+4. User resets password using token
 
 ---
 
 ## 📂 Project Structure
 
 ```
-RevHive/
+backend/
 │
-├── backend/        # Spring Boot APIs
-├── frontend/       # React UI
-├── README.md
+├── controller/     # REST Controllers
+├── service/        # Business logic
+├── repository/     # JPA Repositories
+├── model/          # Entity classes
+├── config/         # Security & WebSocket config
+└── util/           # Helper classes
 ```
 
 ---
 
 ## 🚧 Future Improvements
 
-* Notifications system
-* Advanced analytics in admin dashboard
-* AI-based recommendations
-* Mobile app support
+* Rate limiting for APIs
+* Notification system
+* Better role-based access control
+* Logging & monitoring
 
 ---
 
 ## 👨‍💻 Author
 
-**Team RevHive**
+**Sourav**
 
 ---
 
 ## 📜 License
 
-This project is for learning and development purposes.
+For learning and development purposes.
