@@ -72,6 +72,9 @@ public class User
         this.updatedAt=LocalDateTime.now();
     }
 
+
+    private Boolean subscribeNewsletter;
+
     @PreUpdate
     protected void onUpdate()
     {

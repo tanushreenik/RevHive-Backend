@@ -31,7 +31,7 @@ public class JWTUtil {
                 .setSubject(user.getEmail())
                 .claim("role",user.getRole().name())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis()+100*60*60))
+                .setExpiration(new Date(System.currentTimeMillis() + 604800000))
                 .signWith(getSigningKey())
                 .compact();
     }
