@@ -1,5 +1,7 @@
 package com.project.revhive.demo.repository;
 
+import com.project.revhive.demo.enums.Role;
+import com.project.revhive.demo.enums.Status;
 import com.project.revhive.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -54,6 +56,10 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
 
     Optional<User> findByResetToken(String token);
+
+    long countByStatus(String status);
+
+    long countByRole(Role role);
 
 
 

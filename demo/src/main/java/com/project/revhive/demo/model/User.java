@@ -75,6 +75,8 @@ public class User
 
     private Boolean subscribeNewsletter;
 
+    private String status;
+
     @PreUpdate
     protected void onUpdate()
     {
