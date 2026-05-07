@@ -1,6 +1,6 @@
 package com.project.revhive.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,9 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnoreProperties({"password", "email", "role", "isActive", "createdAt", "updatedAt",
+            "lastActive", "resetToken", "tokenExpiry", "dob", "premiumExpiry",
+            "subscribeNewsletter", "status", "followersCount", "followingCount"})
     private User user;
 
     @NotBlank(message = "Content cannot be blank")
