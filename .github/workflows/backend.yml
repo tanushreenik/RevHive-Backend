@@ -30,3 +30,10 @@ jobs:
         with:
           name: revhive-backend
           path: target/*.jar
+
+      - name: Deploy to Azure
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: YOUR_APP_NAME
+          publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+          package: demo/target/*.jar
