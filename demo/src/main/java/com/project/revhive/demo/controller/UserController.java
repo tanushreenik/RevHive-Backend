@@ -7,6 +7,7 @@ import com.project.revhive.demo.dto.response.LoginResponse;
 import com.project.revhive.demo.model.User;
 import com.project.revhive.demo.repository.UserRepository;
 import com.project.revhive.demo.service.FollowService;
+import com.project.revhive.demo.service.PostService;
 import com.project.revhive.demo.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,6 +33,7 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final FollowService followService;
+    private final PostService postService;
 
     // =========================
     // AUTH APIs
@@ -105,6 +107,9 @@ public class UserController {
             long followingCount =
                     followService.getFollowingCount(userId);
 
+            long postsCount =
+                    postService.countUserPosts(userId);
+
             Map<String, Object> response = new HashMap<>();
 
             response.put("id", user.getId());
@@ -114,7 +119,7 @@ public class UserController {
             response.put("avatarUrl", user.getAvatarUrl());
             response.put("followersCount", followersCount);
             response.put("followingCount", followingCount);
-            response.put("postsCount", 0);
+            response.put("postsCount", postsCount);
             response.put("role", user.getRole().name());
             response.put("isActive", user.isActive());
             response.put("createdAt", user.getCreatedAt());

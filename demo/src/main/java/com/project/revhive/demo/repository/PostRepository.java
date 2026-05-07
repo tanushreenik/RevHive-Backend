@@ -18,6 +18,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findByUser(User user, Pageable pageable);
     Page<Post> findByIsActiveTrue(Pageable pageable);
+    long countByUser(User user);
 
 
     @Query("SELECT p FROM Post p WHERE LOWER(p.content) LIKE LOWER(CONCAT('%', :keyword, '%')) AND p.isActive = true")

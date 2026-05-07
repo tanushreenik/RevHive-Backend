@@ -176,6 +176,12 @@ public class PostService {
         return post;
     }
 
+    public long countUserPosts(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with ID: " + userId));
+        return postRepository.countByUser(user);
+    }
+
     private void validatePostExists(Long postId) {
         if (!postRepository.existsById(postId)) {
             logger.warn("Post not found with ID: {}", postId);
