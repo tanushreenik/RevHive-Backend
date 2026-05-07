@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 @Tag(name="Bookmark Controller ", description = "All the operation related to post bookmark are performed here")
 @RestController
-@RequestMapping("/bookmarks")
+@RequestMapping("/api/bookmarks")
 public class BookmarkController {
     private static final Logger logger = LoggerFactory.getLogger(BookmarkController.class);
     private final BookmarkService bookmarkService;

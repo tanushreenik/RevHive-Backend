@@ -3,6 +3,7 @@ package com.project.revhive.demo.controller;
 import com.project.revhive.demo.dto.request.ChangePasswordRequest;
 import com.project.revhive.demo.dto.request.LoginRequest;
 import com.project.revhive.demo.dto.request.RegisterRequest;
+import com.project.revhive.demo.dto.response.UserSearchDTO;
 import com.project.revhive.demo.dto.response.LoginResponse;
 import com.project.revhive.demo.model.User;
 import com.project.revhive.demo.repository.UserRepository;
@@ -19,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -82,9 +84,7 @@ public class UserController {
         }
     }
 
-    // =========================
-    // PUBLIC PROFILE API
-    // =========================
+
 
     @Operation(summary = "Get user profile")
     @GetMapping("/api/auth/profile/{userId}")
@@ -132,9 +132,7 @@ public class UserController {
         }
     }
 
-    // =========================
-    // SETTINGS APIs
-    // =========================
+
 
     @Operation(summary = "Get current logged in user")
     @GetMapping("/api/users/me")
@@ -219,5 +217,14 @@ public class UserController {
                     )
             );
         }
+    }
+    @GetMapping("/api/users/search")
+    public ResponseEntity<List<UserSearchDTO>> searchUsers(
+            @RequestParam String query
+    ) {
+
+        return ResponseEntity.ok(
+                userService.searchUsers(query)
+        );
     }
 }

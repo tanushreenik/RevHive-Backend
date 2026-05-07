@@ -11,8 +11,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
@@ -26,7 +24,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p WHERE p.isActive = true ORDER BY p.likeCount DESC, p.createdAt DESC")
     Page<Post> findTrendingPosts(Pageable pageable);
 
-
+    long countByUser_Id(Long userId);
 
     @Modifying
     @Transactional

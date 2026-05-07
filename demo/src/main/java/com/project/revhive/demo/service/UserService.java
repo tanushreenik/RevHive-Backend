@@ -4,6 +4,7 @@ package com.project.revhive.demo.service;
 import com.project.revhive.demo.dto.request.ChangePasswordRequest;
 import com.project.revhive.demo.dto.request.LoginRequest;
 import com.project.revhive.demo.dto.request.RegisterRequest;
+import com.project.revhive.demo.dto.response.UserSearchDTO;
 import com.project.revhive.demo.dto.response.LoginResponse;
 import com.project.revhive.demo.enums.Role;
 import com.project.revhive.demo.model.User;
@@ -14,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -132,4 +135,20 @@ public class UserService {
 
         userRepository.save(user);
     }
+    public List<UserSearchDTO> searchUsers(String query) {
+
+        List<User> users =
+                userRepository.findTop10ByUsernameContainingIgnoreCase(query);
+
+        return users.stream()
+                .map(user -> new UserSearchDTO(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getEmail(),
+                        user.getAvatarUrl()
+                ))
+                .toList();
+    }
+
+
 }

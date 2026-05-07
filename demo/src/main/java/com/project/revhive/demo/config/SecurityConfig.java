@@ -30,6 +30,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/ai").permitAll()
                         .requestMatchers("/api/v1/follows/**").authenticated()
                         .requestMatchers("/api/admin/stats").permitAll()
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/api/users/search"
+                        ).permitAll()
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/api/v1/follows/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

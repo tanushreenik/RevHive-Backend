@@ -61,6 +61,8 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     long countByRole(Role role);
 
+    List <User> findTop10ByUsernameContainingIgnoreCase(String query);
+
 
 
 }

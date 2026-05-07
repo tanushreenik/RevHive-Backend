@@ -243,4 +243,16 @@ public class PostController {
                 .orElseThrow(() -> new RuntimeException("User not found"))
                 .getId();
     }
+
+    @GetMapping("/user/{userId}/count")
+    public ResponseEntity<Map<String, Long>> getUserPostsCount(
+            @PathVariable Long userId) {
+
+        long count = postService.getUserPostsCount(userId);
+
+        Map<String, Long> response = new HashMap<>();
+        response.put("postsCount", count);
+
+        return ResponseEntity.ok(response);
+    }
 }
