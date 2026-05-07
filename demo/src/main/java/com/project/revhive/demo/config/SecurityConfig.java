@@ -38,6 +38,10 @@ public class SecurityConfig {
                                 "/api/auth/**",
                                 "/api/v1/follows/**"
                         ).permitAll()
+                        .requestMatchers(
+                                "/api/test",
+                                "/api/auth/**"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
