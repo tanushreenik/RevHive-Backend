@@ -30,6 +30,5 @@ build/
 
 ### VS Code ###
 .vscode/
-application.properties
+#application.properties
 .idea/
-application-azure.properties
