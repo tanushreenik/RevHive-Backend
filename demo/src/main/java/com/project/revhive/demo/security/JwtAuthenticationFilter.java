@@ -67,6 +67,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             System.out.println("JWT Error   " + e.getMessage());
         }
 
+        String path = request.getServletPath();
+
+        if (
+                path.startsWith("/api/v1/follows") ||
+                        path.startsWith("/api/auth")
+        ) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         filterChain.doFilter(request, response);
     }
 }

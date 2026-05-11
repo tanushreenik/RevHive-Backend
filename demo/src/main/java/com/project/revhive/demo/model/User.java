@@ -1,5 +1,6 @@
 package com.project.revhive.demo.model;
 import com.project.revhive.demo.enums.Role;
+import com.project.revhive.demo.enums.Status;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
@@ -53,14 +54,17 @@ public class User
     private LocalDateTime updatedAt;
     private LocalDateTime lastActive;
 
+    private String resetToken;
+    private  LocalDateTime tokenExpiry;
 
+    private boolean premium;
 
 
     @Past(message = "DOB must be in the past")
     @Column(nullable = false)
     private LocalDate dob;
 
-
+    private LocalDate premiumExpiry;
     @PrePersist
     protected void onCreate()
     {
@@ -68,10 +72,19 @@ public class User
         this.updatedAt=LocalDateTime.now();
     }
 
+
+    private Boolean subscribeNewsletter;
+
+    private String status;
+
     @PreUpdate
     protected void onUpdate()
     {
         this.updatedAt=LocalDateTime.now();
     }
+
+//    @Enumerated(EnumType.STRING)
+//    @Column(nullable = false)
+//    private Status status;
 
 }
