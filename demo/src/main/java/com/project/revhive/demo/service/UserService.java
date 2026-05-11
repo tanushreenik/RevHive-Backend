@@ -1,8 +1,10 @@
 package com.project.revhive.demo.service;
 
 //import com.project.revhive.demo.dto.request.LoginRequest;
+import com.project.revhive.demo.dto.request.ChangePasswordRequest;
 import com.project.revhive.demo.dto.request.LoginRequest;
 import com.project.revhive.demo.dto.request.RegisterRequest;
+import com.project.revhive.demo.dto.response.UserSearchDTO;
 import com.project.revhive.demo.dto.response.LoginResponse;
 import com.project.revhive.demo.enums.Role;
 import com.project.revhive.demo.model.User;
@@ -13,6 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -80,5 +84,71 @@ public class UserService {
                 .role(user.getRole().name())
                 .build();
     }
+
+    public User getCurrentUser(String email)
+    {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+
+    public User updateProfile(
+            String email,
+            RegisterRequest request
+    )
+    {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setUsername(request.getUsername());
+        user.setBio(request.getBio());
+        user.setDob(request.getDob());
+        user.setAvatarUrl(request.getAvatarUrl());
+        user.setSubscribeNewsletter(
+                request.getSubscribeNewsletter()
+        );
+
+        return userRepository.save(user);
+    }
+
+    public void changePassword(
+            String email,
+            ChangePasswordRequest request
+    )
+    {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if(!passwordEncoder.matches(
+                request.getCurrentPassword(),
+                user.getPassword()
+        ))
+        {
+            throw new RuntimeException("Wrong current password");
+        }
+
+        user.setPassword(
+                passwordEncoder.encode(
+                        request.getNewPassword()
+                )
+        );
+
+        userRepository.save(user);
+    }
+    public List<UserSearchDTO> searchUsers(String query) {
+
+        List<User> users =
+                userRepository.findTop10ByUsernameContainingIgnoreCase(query);
+
+        return users.stream()
+                .map(user -> new UserSearchDTO(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getEmail(),
+                        user.getAvatarUrl()
+                ))
+                .toList();
+    }
+
 
 }

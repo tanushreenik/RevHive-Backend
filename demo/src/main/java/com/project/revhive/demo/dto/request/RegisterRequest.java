@@ -31,12 +31,12 @@ public class RegisterRequest {
     private LocalDate dob;
 
 
-
+    private Boolean subscribeNewsletter;
 
 
 
 //    @NotBlank(message = "Avatar URL is required")
-//    private String avatarUrl;
+    private String avatarUrl;
 
 
 

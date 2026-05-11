@@ -1,5 +1,7 @@
 package com.project.revhive.demo.repository;
 
+import com.project.revhive.demo.enums.Role;
+import com.project.revhive.demo.enums.Status;
 import com.project.revhive.demo.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -46,6 +48,20 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Query("SELECT COUNT(u) FROM User u WHERE u.lastActive >= :date")
     long getMonthlyActiveUsers(@Param("date") LocalDateTime date);
 
+
+//    List<User> findbyNameOrEmail(String email,String name);
+
+//    List <User> findByStatus(User.s)
+
+
+
+    Optional<User> findByResetToken(String token);
+
+    long countByStatus(String status);
+
+    long countByRole(Role role);
+
+    List <User> findTop10ByUsernameContainingIgnoreCase(String query);
 
 
 

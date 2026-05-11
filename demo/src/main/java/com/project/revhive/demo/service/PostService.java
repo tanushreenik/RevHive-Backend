@@ -176,6 +176,10 @@ public class PostService {
         return post;
     }
 
+    public long getUserPostsCount(Long userId) {
+        return postRepository.countByUser_Id(userId);
+    }
+
     private void validatePostExists(Long postId) {
         if (!postRepository.existsById(postId)) {
             logger.warn("Post not found with ID: {}", postId);
