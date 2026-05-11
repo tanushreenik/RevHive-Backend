@@ -1,39 +1,62 @@
+// com/project/revhive/demo/model/Comment.java
 package com.project.revhive.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "comments")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long userId;
-    private String postId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id", nullable = false)
+    @JsonBackReference
+    private Post post;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    private User user;
+
+    @NotBlank(message = "Comment content cannot be blank")
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    private LocalDateTime createdAt;
+    @Builder.Default
+    @Column(name = "is_active")
+    private boolean isActive = true;
 
-    private Long parentCommentId;
+    @Builder.Default
+    @Column(name = "like_count")
+    private int likeCount = 0;
 
-    // 🔹 Getters & Setters
+    @Column(name = "created_at", updatable = false)
+    private Long createdAt;
 
-    public Long getId() { return id; }
+    @Column(name = "updated_at")
+    private Long updatedAt;
 
-    public Long getUserId() { return userId; }
-    public void setUserId(Long userId) { this.userId = userId; }
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = System.currentTimeMillis();
+        this.updatedAt = System.currentTimeMillis();
+    }
 
-    public String getPostId() { return postId; }
-    public void setPostId(String postId) { this.postId = postId; }
-
-    public String getContent() { return content; }
-    public void setContent(String content) { this.content = content; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public Long getParentCommentId() { return parentCommentId; }
-    public void setParentCommentId(Long parentCommentId) { this.parentCommentId = parentCommentId; }
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = System.currentTimeMillis();
+    }
 }

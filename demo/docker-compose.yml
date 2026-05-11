@@ -1,0 +1,34 @@
+
+
+services:
+
+  app:
+    build: .
+    container_name: revhive-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/revhive_db
+      - SPRING_DATASOURCE_USERNAME=sourav
+      - SPRING_DATASOURCE_PASSWORD=sourav@123
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
+
+  db:
+    image: mysql:8
+    container_name: revhive-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: revhive_db
+      MYSQL_USER: sourav
+      MYSQL_PASSWORD: sourav@123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
