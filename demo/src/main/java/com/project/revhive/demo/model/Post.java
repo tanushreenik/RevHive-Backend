@@ -73,4 +73,8 @@ public class Post {
     protected void onUpdate() {
         this.updatedAt = System.currentTimeMillis();
     }
+
+    public void dummmy(){
+
+    }
 }
